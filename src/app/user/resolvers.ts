@@ -58,9 +58,11 @@ const queries = {
 
     },
     getCurrentUser: async(parent: any, args: any, ctx: GraphqlContext) => {
-        console.log(ctx);
         const id = ctx.user?.id;
         if(!id) return null;
+
+        const user = await prismaClient.user.findUnique({ where: { id }});
+        return user;
 
     }
 };
