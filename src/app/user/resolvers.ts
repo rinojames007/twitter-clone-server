@@ -46,6 +46,17 @@ const extraResolvers = {
       });
       return result.map((el) => el.following);
     },
+    recommendedUsers: async (parent: User, _: any, ctx: GraphqlContext) => {
+      if(!ctx.user) return [];
+      const myFollowing = await prismaClient.follows.findMany({
+        where: { 
+          follower: { id: ctx.user.id }
+        },
+        include: {
+          following: true,
+        }
+      });
+    },
   },
 };
 
